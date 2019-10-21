@@ -19,7 +19,7 @@ void* multi(void* arg)
 {
 	int nucl = cont++;
 
-	// cada thread vai calcular apenas uma linha x coluna da multiplicação 
+	// cada thread vai calcular apenas uma linha x coluna da multiplicaÃ§Ã£o 
 	for (int i = nucl * TAM / 4; i < (nucl + 1) * TAM / 4; i++)
 		for (int j = 0; j < TAM; j++)
 			for (int k = 0; k < TAM; k++)
