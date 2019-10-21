@@ -1,6 +1,7 @@
 #include <iostream>
 #include <pthread.h>
 #include <stdlib.h>
+#include <time.h>
 
 using namespace std;
 
@@ -15,21 +16,26 @@ int m2[TAM][TAM];
 int m3[TAM][TAM];
 int cont = 0;
 
-void* multi(void* arg)
-{
+void* multi(void* arg){
 	int nucl = cont++;
 
-	// cada thread vai calcular apenas uma linha x coluna da multiplicação 
-	for (int i = nucl * TAM / 4; i < (nucl + 1) * TAM / 4; i++)
-		for (int j = 0; j < TAM; j++)
-			for (int k = 0; k < TAM; k++)
+	for (int i = nucl * TAM / THREADS; i < (nucl + 1) * TAM / THREADS; i++) {
+		for (int j = 0; j < TAM; j++) {
+			for (int k = 0; k < TAM; k++) {
 				m3[i][j] += m1[i][k] * m2[k][j];
+			}
+		}
+	}
 	
 }
 
 
-int main()
-{
+int main(){
+
+	clock_t tempo_inicial, tempo_final;
+
+	tempo_inicial = clock();
+
 	for (int i = 0; i < TAM; i++) {
 		for (int j = 0; j < TAM; j++) {
 			m1[i][j] = rand() % 10;
@@ -38,22 +44,7 @@ int main()
 	}
 
 	
-	cout << "\n"<< "Matriz 1" << endl;
-	for (int i = 0; i < TAM; i++) {
-		for (int j = 0; j < TAM; j++)
-			cout << m1[i][j] << " ";
-		cout << endl;
-	}
-
-	 
-	cout << "\n"<< "Matriz 2" << endl;
-	for (int i = 0; i < TAM; i++) {
-		for (int j = 0; j < TAM; j++)
-			cout << m2[i][j] << " ";
-		cout << endl;
-	}
-
-		pthread_t threads[THREADS];
+	pthread_t threads[THREADS];
 
 	for (int i = 0; i < THREADS; i++) {
 		int* p;
@@ -71,6 +62,10 @@ int main()
 			cout << m3[i][j] << " ";
 		cout << "\n";
 	}
+
+	tempo_final = clock();
+
+	cout <<"execucao: "<< (tempo_final - tempo_inicial) / (double)CLOCKS_PER_SEC);
 
 	return 0;
 }
