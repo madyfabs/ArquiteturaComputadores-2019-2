@@ -4,7 +4,7 @@
 
 using namespace std;
 
-// Tamanho da matriz
+// Tamanho da matriz !!
 #define TAM 4 
 
 // Numero de Threads 
